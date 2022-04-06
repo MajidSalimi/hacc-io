@@ -12,6 +12,7 @@ using namespace std;
 
 int main (int argc, char * argv[]) 
 {
+    double startTime=0 , endTime=0,  total_time=0;
     char* fname = 0;    
     char* buf = 0;
     int numtasks, myrank, status;
@@ -38,7 +39,9 @@ int main (int argc, char * argv[])
     fname = (char*)malloc(strlen(argv[2]) +1);
     strncpy (fname, argv[2], strlen(argv[2]));
     fname[strlen(argv[2])] = '\0';
-    
+    if (myrank==0)
+    startTime = MPI_Wtime();
+
 #ifndef HACC_IO_DISABLE_WRITE
     // Let's Populate Some Dummy Data
     float *xx, *yy, *zz, *vx, *vy, *vz, *phi;
@@ -75,6 +78,9 @@ int main (int argc, char * argv[])
 
     //rst->SetPOSIX_IO_Interface(1);
     rst->SetPOSIX_IO_Interface();
+
+    
+
 
 #ifndef HACC_IO_DISABLE_WRITE
     rst->CreateCheckpoint (fname, num_particles);
@@ -162,6 +168,12 @@ int main (int argc, char * argv[])
     delete []pid_r;
     delete []mask_r;
 #endif
+MPI_Barrier( MPI_COMM_WORLD);
+if (myrank==0){
+    endTime = MPI_Wtime();
+    total_time = endTime - startTime;
+    printf("\nTotal time: %f\n",total_time);
+}
     MPI_Finalize();
 
     return 0;
