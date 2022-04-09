@@ -11,7 +11,7 @@
 using namespace std;
 
 int main (int argc, char * argv[]) 
-{
+{   
     double startTime=0 , endTime=0,  total_time=0;
     char* fname = 0;    
     char* buf = 0;
@@ -39,6 +39,11 @@ int main (int argc, char * argv[])
     fname = (char*)malloc(strlen(argv[2]) +1);
     strncpy (fname, argv[2], strlen(argv[2]));
     fname[strlen(argv[2])] = '\0';
+    
+    int i=0;
+    while (i<=1000)
+    {
+    
     if (myrank==0)
     startTime = MPI_Wtime();
 
@@ -134,7 +139,7 @@ int main (int argc, char * argv[])
     
 #ifndef HACC_IO_DISABLE_WRITE
     if (0 == myrank)
-        cout << " CONTENTS VERIFIED... Success " << endl;
+       // cout << " CONTENTS VERIFIED... Success " << endl;
 #endif
 #endif
     
@@ -172,8 +177,10 @@ MPI_Barrier( MPI_COMM_WORLD);
 if (myrank==0){
     endTime = MPI_Wtime();
     total_time = endTime - startTime;
-    printf("\nTotal time: %f\n",total_time);
+    printf("%f\n",total_time);
 }
+i++;
+    }
     MPI_Finalize();
 
     return 0;
