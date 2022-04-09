@@ -24,6 +24,13 @@ The general syntax for `testhacc_io` is
     mpirun ./testhacc_io numparticles /path/to/outputfile
 
 `numparticles` is the length of the arrays that each MPI rank should allocate.
+An example of the running command is:
+```
+mpirun -np 2 ./hacc_io  100000 test/
+```
+which runs the code on 2 procs and stores the output in the test folder which is located in the main folder of the repository.
+
+
 HACC IO currently uses this parameter to size the following arrays:
 
 variable | type  | size
